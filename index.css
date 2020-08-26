@@ -1,0 +1,136 @@
+@import url('https://fonts.googleapis.com/css?family=Sen&display=swap');
+*{
+    font-family: 'Sen';
+    margin:0;
+    box-sizing: border-box;
+    user-select: none;
+}
+body{
+  background: url("gamebg.svg");
+  height: 100%;
+  width: 100%;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+#box{
+    max-width:800px;
+    margin:auto;
+    height: 80vh;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+#box h2{
+  overflow: hidden;
+  width: 790px;
+  border-right: .15em solid orange;
+  font-size: 2.5em;
+  white-space: nowrap;
+  margin: 0 auto;
+  letter-spacing: 0em;
+  animation:
+    typing 5.5s steps(40, end),
+    blink-caret .45s step-end infinite;
+}
+#score{
+  display: none;
+}
+#start,#submit,#retake{
+  padding: 10px;
+  width: 20vw;
+  margin:0 auto;
+  background: rgb(18, 241, 18);
+  border:none;
+  outline: none;
+}
+#start{
+  margin-top:30px;
+}
+#submit,#retake{
+  display: none;
+}
+.card{
+    display: none;
+    padding:50px;
+    position: absolute;
+    top:50%;
+    left:50%;
+    transform: translate(-50%,-50%);
+    width: 90%;
+    background:rgb(255, 255, 254);
+    box-shadow:0px 0px 15px rgba(0,0,0,0.3);
+
+}
+.images{
+  width: 30%;
+  margin:0 auto;
+}
+.options{
+  margin-top:10px;
+  padding: 15px;
+  transition:0.9s cubic-bezier(0.075, 0.82, 0.165, 1);
+}
+.option-inp{
+  display: none;
+}
+.options:hover{
+  background-color: rgb(155, 207, 255);
+}
+.next, .prev{
+    display: none;
+    position: absolute;
+    color:white;
+    z-index: 1;
+    cursor: pointer;
+    transition:0.5s cubic-bezier(0.23, 1, 0.320, 1);
+    padding:20px;
+    top:50%;
+    width:auto;
+    background-color: blue;
+    margin-top:-22px;
+    border-radius:0 3px 3px 0;
+    font-size:18px;
+    font-weight: bold;
+    user-select:none;
+  }
+.next{
+    right:0px;
+    border-radius:3px 0 0 3px;
+  }
+.prev{
+    left:0px;
+    border-radius:3px 0 0 3px;
+  }
+.next:hover, .prev:hover{
+    background-color: rgba(32, 21, 83, 0.8);
+  }
+/* Fading animation */
+.fade {
+    -webkit-animation-name: fade;
+    -webkit-animation-duration: 1.5s;
+    animation-name: fade;
+    animation-duration: 1.5s;
+  }
+  
+  @-webkit-keyframes fade {
+    from {opacity: .4}
+    to {opacity: 1}
+  }
+  
+  @keyframes fade {
+    from {opacity: .4}
+    to {opacity: 1}
+  }
+
+  @keyframes typing {
+    from { width: 0 }
+    to { width: 790px }
+  }
+  
+  @keyframes blink-caret {
+    from, to { border-color: transparent }
+    50% { border-color: rgb(253, 24, 74); }
+  }
+  
