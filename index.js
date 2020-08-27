@@ -173,6 +173,8 @@ else if (score > JSON.parse(localStorage.getItem(`${name.value}`))){
 }
 function displayScore(){
     clearInterval(countdown);
+    sec.innerHTML="00";
+    min.innerHTML="0";
     for (let j = cards.length - 1; j >= 0; j--)
     {
          cards[j].parentNode.removeChild(cards[j]);
@@ -196,7 +198,7 @@ function displayScore(){
     next.style.display="none";
     scoreTxt.style.display="block";
     best();
-    scoreTxt.innerHTML=`${player} your score : ${score}<br>${ JSON.parse(localStorage.getItem(`${name.value}:Date`))} ${ JSON.parse(localStorage.getItem(`${name.value}:Time`))}<br> Your best: ${JSON.parse(localStorage.getItem(`${name.value}`))}/10`;
+    scoreTxt.innerHTML=`${player} your score : ${score}/10<br>${ JSON.parse(localStorage.getItem(`${name.value}:Date`))} ${ JSON.parse(localStorage.getItem(`${name.value}:Time`))}<br> Your best: ${JSON.parse(localStorage.getItem(`${name.value}`))}/10`;
     scoreTxt.style.fontSize="1.1em";
 }
 function createQuiz(){
