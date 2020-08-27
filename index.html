@@ -4,13 +4,34 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="side-nav.css">
     <title>Document</title>
 </head>
 <body>
-
+        <ul id="side-nav">
+            <li class="closebtn" onclick="closeNav()">&times;</li>
+            <li class="ques-list" onclick="selectSlide(1)">Question 1</li>
+            <li class="ques-list" onclick="selectSlide(2)">Question 2</li>
+            <li class="ques-list" onclick="selectSlide(3)">Question 3</li>
+            <li class="ques-list" onclick="selectSlide(4)">Question 4</li>
+            <li class="ques-list" onclick="selectSlide(5)">Question 5</li>
+            <li class="ques-list" onclick="selectSlide(6)">Question 6</li>
+            <li class="ques-list" onclick="selectSlide(7)">Question 7</li>
+            <li class="ques-list" onclick="selectSlide(8)">Question 8</li>
+            <li class="ques-list" onclick="selectSlide(9)">Question 9</li>
+            <li class="ques-list" onclick="selectSlide(10)">Question 10</li>
+        </ul>
+        <header> 
+            <div id="burger-nav" onclick="openNav()">&#9776;</div> 
+            <div id="timer">
+                <h4>TIME</h4>
+                <h3 id="min">0<h3><h3>:</h3><h3 id="sec">00</h3><h3> mins</h3>
+            </div>
+        </header>
     <div id="box">
         <h2 id="intro">How well do you know about COVID-19?</h2>
-        <button id="start">Take Quiz</button>
+        <input type="text" name="name" id="name" placeholder="enter your name">
+        <button id="start" type="button">Take Quiz</button>
         <div id="score"></div>
         <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
         <a class="next" onclick="plusSlides(1)">&#10095;</a>

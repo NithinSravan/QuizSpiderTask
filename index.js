@@ -2,13 +2,30 @@ let slideIndex = 1;
 let questionNum=0;
 let questionCard=new Array();
 let box=document.getElementById("box");
+let burger=document.getElementById("burger-nav");
 let intro=document.getElementById("intro");
+let player;
+let s,m;
+let sec = document.getElementById('sec');
+let min = document.getElementById('min');
+let currDate;
+let day;
+let month;
+let year;
+let date;
+let time;
+let realHours;
+let countdown;
+let realMins;
 let scoreTxt=document.getElementById("score")
 let prev=document.getElementsByClassName("prev")[0];
 let next=document.getElementsByClassName("next")[0];
 let button=document.getElementById("start");
+let name=document.getElementById("name");
 let submit=document.getElementById("submit");
 let retake=document.getElementById("retake");
+let sideNav=document.getElementById("side-nav");
+let quesList=document.getElementsByClassName("ques-list")
 let cards;
 let images;
 let questions;
@@ -25,18 +42,30 @@ class QuestionCard{
         this.imgsrc=imgsrc;
         this.options=[...options]
         this.answer=answer;
-
     }
 }
 
-// Next/previous controls
+function openNav(){
+    sideNav.style.width="340px";
+}
+
+function closeNav(){
+    sideNav.style.width="0px";
+}
+function selectSlide(i){
+    slideIndex=i;
+    questionNum=i-1;
+    showSlides(slideIndex);
+}
+
 function plusSlides(n) {
     questionNum+=n;
     slideIndex += n
+    console.log(slideIndex)
   showSlides(slideIndex);
 }
 
-// Thumbnail image controls
+
 function currentSlide(n) {
   showSlides(slideIndex = n);
 }
@@ -55,15 +84,7 @@ function showSlides(n) {
   else{
     next.style.display="block"
   }
-//   if (n > cards.length) {
-//       next.style.display="none"
-//       questionNum=0;
-//     }
-//   if (n < 1) {
-//     prev.style.display="block"
-//       slideIndex = cards.length
-//       questionNum=cards.length-1;
-//     }
+
   for (i = 0; i < cards.length; i++) {
       cards[i].style.display = "none";
   }
@@ -71,53 +92,121 @@ function showSlides(n) {
   cards[slideIndex-1].style.display = "block";
 
 }
-
+function random(number)
+{
+	return Math.floor(Math.random() *(number));
+};
+function randomizeQues(){
+    for(let i=questionCard.length-1;i>0;i--){
+        let j=random(i+1);
+        let temp=questionCard[i];
+        questionCard[i]=questionCard[j];
+        questionCard[j]=temp;
+    }
+}
 function retakeQuiz(){
+    name.style.display="block";
     retake.style.display="none";
     button.style.display="block";
     intro.style.display="block";
     scoreTxt.style.display="none";
-    prev.style.display="none"
+    prev.style.display="none";
     setup();
 }
 function chooseAnswer(){
     for(let i=questionNum*4;i<questionNum*4+4;i++){
         options[i].removeEventListener("click",chooseAnswer)
     }
+   
     if(parseInt(this.children[0].value)===questionCard[questionNum].answer){
         score++;
         answered++;
-        console.log(score,answered)
-        options[parseInt(this.children[0].value)+questionNum*4].style.background="green"
+        quesList[slideIndex-1].style.background="rgb(126, 241, 18)";
+        options[parseInt(this.children[0].value)+questionNum*4].style.background="rgb(126, 241, 18)"
         options[parseInt(this.children[0].value)+questionNum*4].style.color="#fff"
    
     }
     else{
         answered++;
-        console.log(score,answered)
-        options[parseInt(this.children[0].value)+questionNum*4].style.background="red"
+        quesList[slideIndex-1].style.background="rgb(255, 45, 73)";
+        options[parseInt(this.children[0].value)+questionNum*4].style.background="rgb(255, 45, 73)"
         options[parseInt(this.children[0].value)+questionNum*4].style.color="#fff"
     }
-    console.log(answered,questions.length)
     if(answered===questions.length){
         submit.style.display="block";
     }
 }
+function timer ()
+{
+	let secs=300;
+    countdown=setInterval(()=>{
+        m=Math.floor(secs/60);
+        s=secs-m*60;
+        console.log(m,s)
+        if(Math.floor(s/10)===0){
+            sec.innerHTML="0"+s;
+        }else
+        sec.innerHTML=s;
+        min.innerHTML=m;
+        secs--;
+
+       
+        if(secs===-1){
+            displayScore();
+        }
+    },1000)
+
+}
+function best(){
+    if (localStorage.getItem(`${name.value}`) === null){
+        localStorage.setItem(`${name.value}`,JSON.stringify(score));
+        localStorage.setItem(`${name.value}:Date`,JSON.stringify(date));
+        localStorage.setItem(`${name.value}:Time`,JSON.stringify(time));
+    }
+    
+else if (score > JSON.parse(localStorage.getItem(`${name.value}`))){
+    localStorage.setItem(`${name.value}`, JSON.stringify(score));
+    localStorage.setItem(`${name.value}:Date`,JSON.stringify(date));
+    localStorage.setItem(`${name.value}:Time`,JSON.stringify(time));
+}
+    
+}
 function displayScore(){
+    clearInterval(countdown);
     for (let j = cards.length - 1; j >= 0; j--)
     {
          cards[j].parentNode.removeChild(cards[j]);
     }
+    currDate=new Date();
+    day=currDate.getDate();
+    month=currDate.getMonth();
+    year=currDate.getFullYear();
+    date=`Date: ${day}/${month}/${year}`
+    realHours=currDate.getHours();
+    realMins=currDate.getMinutes();
+    if(Math.floor(realMins/10)===0)
+    time=`Time: ${realHours}:0${realMins} hrs`
+    else{
+        time=`Time: ${realHours}:${realMins} hrs`
+    }
     submit.style.display="none";
-    retake.style.display="block"
-    prev.style.display="none"
-    next.style.display="none"
-    scoreTxt.style.display="block"
-    scoreTxt.innerText="Your Score: "+score;
-    scoreTxt.style.fontSize="2.5em";
+    burger.style.display="none"
+    retake.style.display="block";
+    prev.style.display="none";
+    next.style.display="none";
+    scoreTxt.style.display="block";
+    best();
+    scoreTxt.innerHTML=`${player} your score : ${score}<br>${ JSON.parse(localStorage.getItem(`${name.value}:Date`))} ${ JSON.parse(localStorage.getItem(`${name.value}:Time`))}<br> Your best: ${JSON.parse(localStorage.getItem(`${name.value}`))}/10`;
+    scoreTxt.style.fontSize="1.1em";
 }
 function createQuiz(){
-
+    timer()
+    if(name.value)
+    player=name.value;
+    else
+    player="Guest";
+    name.style.display="none";
+    burger.style.display="block";
     button.removeEventListener("click",createQuiz)
     button.style.display="none"
     intro.style.display="none"
@@ -148,7 +237,6 @@ function createQuiz(){
         
        
         quesDiv.classList.add("question");
-        console.log(i)
         questions[i].innerText=i+1+") "+questionCard[i].question;
         
         let k=0;
@@ -182,7 +270,8 @@ function welcome(){
         questionNum=0;
         score=0;
         answered=0;
- 
+        s=0;
+        m=0;
         questionCard=[
             new QuestionCard("How many countries, areas or territories are suffering from novel coronavirus outbreak in the World?",null,[
                 "A) More than 150",
@@ -238,18 +327,15 @@ function welcome(){
                 "C) Remdesivir",
                 "D) Hydroxychloroquine"
             ],0),
-            new QuestionCard(" What are the precautions that need to be taken to protect from the coronavirus?",null,[
-                "A) Cover your nose and mouth when sneezing.",
-                "B) Add more garlic into your diet.",
-                "C) Visit your doctor for antibiotics treatment.",
-                "D) Wash your hands after every hour."
-            ],0)
+            new QuestionCard("Which of these is NOT listed by the WHO as a symptom of coronavirus?",null,[
+                "A) Fever",
+                "B) Dry cough",
+                "C) Blurred vision",
+                "D) Nasal congestion"
+            ],2)
         ]
-
+        randomizeQues();
         welcome()
-       
-   
-
  }
  setup()
 
